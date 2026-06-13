@@ -123,9 +123,9 @@ class GoalManager:
                     for h in item["history"]
                 ]
                 self.goals.append(goal)
-            print(f"📂  Данные успешно загружены из файла '{filename}'. Восстановлено целей: {len(self.goals)}")
+            print(f"Данные успешно загружены из файла '{filename}'. Восстановлено целей: {len(self.goals)}")
         except FileNotFoundError:
-            print(f"ℹ️  Файл '{filename}' не найден. Начинаем с пустого списка.")
+            print(f"Файл '{filename}' не найден. Начинаем с пустого списка.")
 
 manager = GoalManager()
 
