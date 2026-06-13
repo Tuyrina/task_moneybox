@@ -43,6 +43,22 @@ class Goal:
             print(f'Внимание! До завершения цели "{self.name}" осталось всего {days_left} дня(ей)!')
         elif days_left < 0:
             print(f'Срок по цели "{self.name}" ИСТЕК на {abs(days_left)} дня(ей) назад!')
+    def predict_completion_date(self) -> str:
+        if self.status == 'Выполнена':
+            return 'Уже выполнена'
+        if len(self.history) < 2:
+            return 'Недостаточно данных для прогноза (нужно хотя бы два пополнения)'
+        total_days = (self.history[-1][0] - self.history[0][0]).days
+        if total_days <= 0:
+            return 'Недостаточно временных данных для расчета интенсивности'
+        total_saved = sum(sum_val for _, sum_val in self.history)
+        avg_per_day = total_saved / total_days
+        if avg_per_day <= 0:
+            return 'Накопления не увеличиваются'
+        remaining_amount = self.target_amount - self.current_balance
+        days_needed = int(remaining_amount / avg_per_day)
+        predicted_date = datetime.now() + timedelta(days=days_needed)
+        return predicted_date.strftime('%Y-%m-%d')
 
 class GoalManager:
     def __init__(self):
@@ -58,6 +74,7 @@ class GoalManager:
         for goal in self.goals:
             if goal.name == name:
                 self.goals.remove(goal)
+                self.save_to_json()
                 print(f'Цель "{name}" успешно удалена из системы.')
                 return
             print(f'Цель с названием "{name}" не найдена.')
@@ -120,6 +137,9 @@ print("\n--- 2. Пополнения и аналитика (Повышенный
 laptop_goal.deposit(30000, date_str="2026-05-01")
 laptop_goal.deposit(30000, date_str="2026-05-15")
 laptop_goal.deposit(20000, date_str="2026-06-01")
+
+print(f'Текущий прогресс цели: {laptop_goal.get_progress()}%')
+print(f'Прогноз даты завершения цели: {laptop_goal.predict_completion_date()}')
 
 print("\n--- 3. Проверка уведомлений и времени ---")
 laptop_goal.check_deadline_reminder()
