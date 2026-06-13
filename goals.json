@@ -1,0 +1,24 @@
+[
+    {
+        "name": "Купить MacBook",
+        "category": "Техника",
+        "target_amount": 150000,
+        "current_balance": 80000.0,
+        "status": "В процессе",
+        "deadline": "2026-06-30",
+        "history": [
+            {
+                "date": "2026-05-01",
+                "amount": 30000
+            },
+            {
+                "date": "2026-05-15",
+                "amount": 30000
+            },
+            {
+                "date": "2026-06-01",
+                "amount": 20000
+            }
+        ]
+    }
+]
